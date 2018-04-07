@@ -1,4 +1,4 @@
-# firedex - an ORM framework for firebase's realtime database
+# firedex - Functionally driven object modeling framework for Firebase's realtime database
 
 This library offers a simpler and more familiar way of using firebase's realtime database.
 
@@ -10,6 +10,31 @@ This library offers a simpler and more familiar way of using firebase's realtime
 - allows for securely exposing indexed fields on a value while not exposing the entire value
 - allows for a simpler mechanism for performing updates on multiple values
 - offers a method for populating queries with cross referenced schemas
+
+
+## Example
+```js
+// User.js
+
+import { defindex, defpath, extend } from 'firedex/schema'
+import { Entity, String } from 'firedex/schemas'
+
+const User = extend(Entity, 'User', { // extends the built in type of Entity
+  path: defpath('/users/$id'),
+  props: {
+    username: String
+  },
+  indexes: [
+    defindex({
+      'username': defindex.ASC
+    }, {
+      unique: true  // Defines this index as unique and prevents duplicates
+    })
+  ]
+})
+
+export default User
+```
 
 
 # Documentation
