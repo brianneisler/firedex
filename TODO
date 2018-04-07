@@ -1,0 +1,16 @@
+- [ ] implement generation for different op types (update, set, remove, create)
+- [ ] query by index in firedex
+- [ ] support objects in conditions in firedex
+- [ ] implement removeOp
+- [ ] implement removeOneOp
+- [ ] implement updateOp
+- [ ] implement updateOneOp
+- [ ] implement setOp
+- [ ] implement setOneOp
+- [ ] implement loading of references using population
+- [ ] implement deep population (queries that load multiple values and EACH need populating)
+- [ ] implement sync query adjustments, sub queries for populated values must
+also persist and result in the correct "child_added", "child_changed", "child_removed"
+events when the populated values are updated
+- [ ] prevent create from overwriting values using firebase rules
+- [ ] log all ops using multi updates. Use these to ensure ops behave correctly.
