@@ -21,22 +21,29 @@ npm-debug.log
 *.iws
 .idea
 
-#mac
+# mac
 .DS_Store
 
 # eslint
 .eslintcache
+.eslintignore
+.eslintrc.js
 
 #development
 .babelrc
 .editorconfig
-.eslintignore
-.eslintrc.js
+.env
 .travis.yml
+*.test.js
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
+DEVELOPMENT.md
+TODO
 __tests__
 config
 docs
+etc
 examples
+scripts
 src
+test

@@ -16,7 +16,7 @@ const doPopulation = async (database, populate, snapshot) => {
   }))
 
 
-  const child = (childPathString) => {
+  const child = (childPathString) => { // eslint-disable-line no-unused-vars
     throw new Error('TODO: "child" for projection needs to be implemented')
   }
 
@@ -24,11 +24,11 @@ const doPopulation = async (database, populate, snapshot) => {
     throw new Error('TODO: "exportVal" for projection needs to be implemented')
   }
 
-  const forEach = (action) => {
+  const forEach = (action) => { // eslint-disable-line no-unused-vars
     throw new Error('TODO: "forEach" for projection needs to be implemented')
   }
 
-  const hasChild = (childPathString) => {
+  const hasChild = (childPathString) => { // eslint-disable-line no-unused-vars
     throw new Error('TODO: "hasChild" for projection needs to be implemented')
   }
 
@@ -61,7 +61,7 @@ const populator = (database, populate, query) => {
     const ref = query.exec()
 
     return ref.on(eventType, (snapshot, prevChildKey) => {
-      const data = snapshot.val()
+      // const data = snapshot.val()
 
       // TODO BRN: This behavior needs to be different based on whether the
       // query is a findOne query or a find query.

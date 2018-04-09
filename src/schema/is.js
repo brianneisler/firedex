@@ -1,3 +1,4 @@
+/* eslint-disable */
 import defn from './defn'
 
 const is = defn('is', (schema, value) => {

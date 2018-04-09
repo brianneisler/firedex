@@ -9,7 +9,7 @@ const Entity = extend(Timestamped, 'Entity', {
   },
   indexes: [
     defindex({
-      'id': defindex.ASC
+      id: defindex.ASC
     }, {
       unique: true
     })

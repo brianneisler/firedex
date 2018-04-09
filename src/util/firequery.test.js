@@ -1,20 +1,15 @@
-import uuid from 'uuid/v1'
 import firequery from './firequery'
-import { authAnonymously, initTestApp } from '../test'
+import { cleanupTestApp, initTestApp } from '../test'
 
 let app
 let database
-let namespace
 beforeEach(async () => {
-  namespace = uuid()
-  app = initTestApp(namespace)
+  app = await initTestApp()
   database = app.database()
-  await authAnonymously(app)
 })
 
 afterEach(async () => {
-  await database.ref(namespace).remove()
-  database.goOffline()
+  await cleanupTestApp(app)
 })
 
 test('empty conditions finds all values', async () => {
@@ -29,14 +24,14 @@ test('empty conditions finds all values', async () => {
     }
   }
   await app.database()
-    .ref(`${namespace}`)
+    .ref(`${app.namespace}`)
     .set(testData)
 
   const result = await firequery(database, {
     conditions: {},
     path: {
       parts: [
-        namespace,
+        app.namespace,
         'items'
       ]
     }
@@ -67,14 +62,14 @@ test('empty conditions with wild id path finds all values above id', async () =>
     }
   }
   await app.database()
-    .ref(`${namespace}`)
+    .ref(`${app.namespace}`)
     .set(testData)
 
   const result = await firequery(database, {
     conditions: {},
     path: {
       parts: [
-        namespace,
+        app.namespace,
         'items',
         '$id'
       ]
@@ -106,7 +101,7 @@ test('conditions with id path only finds specific value', async () => {
     }
   }
   await app.database()
-    .ref(`${namespace}`)
+    .ref(`${app.namespace}`)
     .set(testData)
 
   const result = await firequery(database, {
@@ -115,7 +110,7 @@ test('conditions with id path only finds specific value', async () => {
     },
     path: {
       parts: [
-        namespace,
+        app.namespace,
         'items',
         '$id'
       ]

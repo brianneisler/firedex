@@ -25,7 +25,8 @@ npm-debug.log
 .DS_Store
 
 # development
-tmp
-dist
 .env
 .eslintcache
+dist
+etc
+tmp

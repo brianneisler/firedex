@@ -1,9 +1,11 @@
+/* eslint-disable */
 import fireref from './fireref'
 import resolvePathParts from './resolvePathParts'
 import validateOpConditions from './validateOpConditions'
 import validateOpSchema from './validateOpSchema'
 import query from '../query'
 
+//TODO BRN: This needs to be written
 
 const opRemove = (model = {}) => {
   const {

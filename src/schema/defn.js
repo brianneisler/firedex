@@ -1,11 +1,9 @@
-const defn = (...forms) => {
-  return {
-    '@meta': {
-      type: 'fn'
-    },
-    forms,
-    eval: async () => {}
-  }
-}
+const defn = (...forms) => ({
+  '@meta': {
+    type: 'fn'
+  },
+  forms,
+  eval: async () => {}
+})
 
 export default defn

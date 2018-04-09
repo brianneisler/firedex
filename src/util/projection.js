@@ -6,7 +6,7 @@ const ops = {
   first: (value) => values(value)[0]
 }
 const doProjection = (proj, snapshot) => {
-  const child = (childPathString) => {
+  const child = (childPathString) => { // eslint-disable-line no-unused-vars
     throw new Error('TODO: "child" for projection needs to be implemented')
   }
 
@@ -14,11 +14,11 @@ const doProjection = (proj, snapshot) => {
     throw new Error('TODO: "exportVal" for projection needs to be implemented')
   }
 
-  const forEach = (action) => {
+  const forEach = (action) => { // eslint-disable-line no-unused-vars
     throw new Error('TODO: "forEach" for projection needs to be implemented')
   }
 
-  const hasChild = (childPathString) => {
+  const hasChild = (childPathString) => { // eslint-disable-line no-unused-vars
     throw new Error('TODO: "hasChild" for projection needs to be implemented')
   }
 

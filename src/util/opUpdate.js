@@ -1,10 +1,8 @@
-import { is, isNil, mapObjIndexed } from 'ramda'
+/* eslint-disable */
+import { mapObjIndexed } from 'ramda'
 import generate from '../generate'
 import firequery from './firequery'
 import fireref from './fireref'
-import getIndexKeys from './getIndexKeys'
-import getIndexValues from './getIndexValues'
-import mapJoinPathParts from './mapJoinPathParts'
 import resolvePath from './resolvePath'
 import validateOpConditions from './validateOpConditions'
 import validateOpSchema from './validateOpSchema'
@@ -51,13 +49,14 @@ const opUpdate = (model) => {
       throw new Error('Op must first be generated before it can provide updates')
     }
 
-    return reduce((dbUpdates))
-
-    const resolvedPath = resolvePath(schema, data)
-    return {
-      [resolvedPath]: data,
-      ...generateIndexUpdates(schema, data, resolvedPath)
-    }
+    // TODO BRN
+    // return reduce((dbUpdates))
+    //
+    // const resolvedPath = resolvePath(schema, data)
+    // return {
+    //   [resolvedPath]: data,
+    //   ...generateIndexUpdates(schema, data, resolvedPath)
+    // }
   }
 
   const exec = async (database) => {

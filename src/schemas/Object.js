@@ -1,6 +1,7 @@
-import { keys, prop, reduce } from 'ramda'
+import { assoc, keys, prop, reduce } from 'ramda'
 import generate from '../generate'
 import defschema from '../schema/defschema'
+import isUndefined from '../util/isUndefined'
 
 const ObjectSchema = defschema('Object', {
   generate: (database, schema, opType, prevValue, data) => {
@@ -14,8 +15,14 @@ const ObjectSchema = defschema('Object', {
       const propData = prop(propName, data)
       const propPrevValue = prop(propName, prevValue)
       const result = generate(database, propSchema, opType, propPrevValue, propData)
-      if (opType === 'update')
-    }, keys(props))
+
+      // TODO BRN: Any keys that return undefined should be dropped from the result
+      if (isUndefined(result)) {
+        return generatedData
+      }
+
+      return assoc(propName, result, generatedData)
+    }, {}, keys(props))
   }
 })
 

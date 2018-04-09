@@ -1,38 +1,33 @@
-import { keys } from 'ramda'
-import uuid from 'uuid/v1'
 import { defpath, defschema } from './schema'
-import { authAnonymously, initTestApp } from './test'
-import { String } from './schemas'
+import { cleanupTestApp, initTestApp } from './test'
+// import { String } from './schemas'
 import create from './create'
 
 let app
 let database
-let namespace
 beforeEach(async () => {
-  namespace = uuid()
-  app = initTestApp(namespace)
+  app = await initTestApp()
   database = app.database()
-  await authAnonymously(app)
 })
 
 afterEach(async () => {
-  await database.ref(namespace).remove()
-  database.goOffline()
+  await cleanupTestApp(app)
 })
 
 test('can create using a schema that only has a path', async () => {
   const Test = defschema('Test', {
-    path: defpath(`${namespace}/test`)
+    path: defpath(`${app.namespace}/test`)
   })
   const testValue = {
     value: 'a'
   }
 
-  const pushResult = await create(database, Test, testValue)
-  const querySnap = await database.ref(`${namespace}/test`).once('value')
+  const createResult = await create(database, Test, testValue)
+    .then((snapshot) => snapshot.val())
+  const data = await database.ref(`${app.namespace}/test`)
+    .once('value')
+    .then((snapshot) => snapshot.val())
 
-  expect(pushResult).toEqual(undefined)
-
-  const data = querySnap.val()
   expect(data).toEqual(testValue)
+  expect(createResult).toEqual(data)
 })

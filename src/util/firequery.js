@@ -1,4 +1,4 @@
-import { dropLast, has, join, keys, last, length, omit, pick, tail, values } from 'ramda'
+import { dropLast, has, keys, last, length, tail, values } from 'ramda'
 import fireref from './fireref'
 import hasWilds from './hasWilds'
 import isWild from './isWild'

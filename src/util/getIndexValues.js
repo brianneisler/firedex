@@ -11,7 +11,7 @@ const getIndexValues = (path, resolvedPath) => {
       const resolvedPart = resolvedParts[index]
       return {
         ...values,
-        [ name ]: resolvedPart
+        [name]: resolvedPart
       }
     }
     return values

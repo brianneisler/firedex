@@ -1,18 +1,46 @@
-import dotenv from 'dotenv'
-import firebase from 'firebase'
+import dotenv from 'dotenv' // eslint-disable-line import/no-extraneous-dependencies
+import admin from 'firebase-admin' // eslint-disable-line import/no-extraneous-dependencies
+import uuid from 'uuid/v1' // eslint-disable-line import/no-extraneous-dependencies
+import createTestAnonymousUser from './createTestAnonymousUser'
+// import deleteAllUsers from './deleteAllUsers'
+import getServiceAccount from './getServiceAccount'
+import initAdminApp from './initAdminApp'
 
 dotenv.config()
 
-const config = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: `${process.env.FIREBASE_PROJECT_ID}.firebaseapp.com`,
-  databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: `${process.env.FIREBASE_PROJECT_ID}.appspot.com`,
-  messagingSenderId: `${process.env.FIREBASE_MESSAGING_SENDER_ID}`
-}
-const initTestApp = (namespace) =>
-  firebase.initializeApp(config, namespace)
+// const config = {
+//   apiKey: process.env.FIREBASE_API_KEY,
+//   authDomain: `${process.env.FIREBASE_PROJECT_ID}.firebaseapp.com`,
+//   databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
+//   projectId: process.env.FIREBASE_PROJECT_ID,
+//   storageBucket: `${process.env.FIREBASE_PROJECT_ID}.appspot.com`,
+//   messagingSenderId: `${process.env.FIREBASE_MESSAGING_SENDER_ID}`
+// }
+// const initTestApp = (adminApp, namespace) =>
+//   firebase.initializeApp(config, namespace)
 
+const initTestApp = async () => {
+  const adminApp = initAdminApp()
+
+  // await deleteAllUsers(adminApp)
+  const testUser = await createTestAnonymousUser(adminApp)
+  const namespace = uuid()
+  const serviceAccount = getServiceAccount()
+
+  const app = admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
+    databaseAuthVariableOverride: {
+      uid: testUser.uid
+    },
+    storageBucket: `${process.env.FIREBASE_PROJECT_ID}.appspot.com`,
+    messagingSenderId: `${process.env.FIREBASE_MESSAGING_SENDER_ID}`
+  }, namespace)
+
+  app.namespace = namespace
+  app.testUser = testUser
+
+  return app
+}
 
 export default initTestApp

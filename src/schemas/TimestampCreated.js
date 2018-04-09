@@ -2,7 +2,7 @@ import firebase from 'firebase'
 import defschema from '../schema/defschema'
 
 const TimestampCreated = defschema('TimestampCreated', {
-  generate: (database, schema, prevValue, value) => {
+  generate: (database, schema, opType, prevValue, value) => {
     if (!value && prevValue) {
       return prevValue
     }

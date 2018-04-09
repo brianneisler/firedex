@@ -1,3 +1,4 @@
+/* eslint-disable */
 // var ref = new Firebase("https://<YOUR-FIREBASE-APP>.firebaseio.com");
 // // Generate a new push ID for the new post
 // var newPostRef = ref.child("posts").push();

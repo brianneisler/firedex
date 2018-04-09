@@ -1,28 +1,26 @@
-import uuid from 'uuid/v1'
+import { keys, length } from 'ramda'
 import { defpath, extend } from '../schema'
-import push from '../push'
+import firequery from '../util/firequery'
+import create from '../create'
 import Entity from './Entity'
 import String from './String'
-import { authAnonymously, initTestApp } from '../test'
+import { cleanupTestApp, initTestApp } from '../test'
 
 let app
 let database
-let namespace
 beforeEach(async () => {
-  namespace = uuid()
-  app = initTestApp(namespace)
+  app = await initTestApp()
   database = app.database()
-  await authAnonymously(app)
 })
 
 afterEach(async () => {
-  await database.ref(namespace).remove()
-  database.goOffline()
+  await cleanupTestApp(app)
 })
 
-test('pushes extension of Entity ', async () => {
+
+test('creates extension of Entity ', async () => {
   const Test = extend(Entity, 'Test', {
-    path: defpath(`${namespace}/test/$id`),
+    path: defpath(`${app.namespace}/test/$id`),
     props: {
       value: String
     }
@@ -30,16 +28,15 @@ test('pushes extension of Entity ', async () => {
   const testValue = {
     value: 'a'
   }
-  await app.database()
-    .ref(`${namespace}`)
-    .set(testData)
+  const returned = await create(database, Test, testValue)
+    .then((snapshot) => snapshot.val())
 
   const result = await firequery(database, {
     conditions: {},
     path: {
       parts: [
-        namespace,
-        'items'
+        app.namespace,
+        'test'
       ]
     }
   })
@@ -47,12 +44,15 @@ test('pushes extension of Entity ', async () => {
     .once('value')
     .then((snapshot) => snapshot.val())
 
-  expect(result).toEqual({
-    id1: {
-      value: 'a'
-    },
-    id2: {
-      value: 'b'
-    }
+  const testKeys = keys(result)
+  expect(length(testKeys)).toEqual(1)
+
+  const firstResult = result[testKeys[0]]
+  expect(firstResult).toMatchObject({
+    createdAt: expect.any(Number),
+    id: expect.stringMatching(/^-[a-zA-Z0-9_-]*$/),
+    updatedAt: expect.any(Number),
+    value: 'a'
   })
+  expect(returned).toEqual(firstResult)
 })
