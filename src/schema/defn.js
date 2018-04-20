@@ -3,7 +3,7 @@ const defn = (name, ...forms) => {
     '@meta': {
       type: 'invoke'
     },
-    args,
+    args
   })
   defineInvocation['@meta'] = {
     type: 'fn'

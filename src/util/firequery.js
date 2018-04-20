@@ -8,7 +8,12 @@ import pickWilds from './pickWilds'
 import resolvePathParts from './resolvePathParts'
 
 const firequery = (database, model) => {
-  const { conditions, limitToFirst, limitToLast, path } = model
+  const {
+    conditions,
+    limitToFirst,
+    limitToLast,
+    path
+  } = model
   const exec = () => {
     const parts = parseParts(path)
     const wildConditions = pickWilds(parts, conditions)

@@ -1,4 +1,3 @@
-import { keys } from 'ramda'
 import { defpath, defschema } from './schema'
 import { cleanupTestApp, initTestApp } from './test'
 import removeOne from './removeOne'

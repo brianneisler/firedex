@@ -1,4 +1,4 @@
-import { assoc, isEmpty, mapObjIndexed, reduce, values } from 'ramda'
+import { assoc, isEmpty, reduce, values } from 'ramda'
 import firequery from './firequery'
 import fireref from './fireref'
 import getSnapshotChildren from './getSnapshotChildren'
@@ -34,20 +34,19 @@ const opRemove = (model = {}) => {
     if (isEmpty(conditions)) {
       const resolvedPath = resolvePath(schema, conditions)
       return {
-        [resolvedPath]: null,
+        [resolvedPath]: null
         // ...generateIndexUpdates(schema, data, resolvedPath)
       }
-    } else {
-      const children = getSnapshotChildren(hydration)
-      return reduce(
-        (updates, snapshot) => {
-          const snapPath = getSnapshotPath(snapshot)
-          return assoc(snapPath, null, updates)
-        },
-        {},
-        values(children)
-      )
     }
+    const children = getSnapshotChildren(hydration)
+    return reduce(
+      (updates, snapshot) => {
+        const snapPath = getSnapshotPath(snapshot)
+        return assoc(snapPath, null, updates)
+      },
+      {},
+      values(children)
+    )
   }
 
   const exec = async (database) => {
