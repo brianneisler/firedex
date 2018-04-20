@@ -2,6 +2,7 @@ import * as schema from './schema'
 import * as schemas from './schemas'
 
 export { default as create } from './create'
+export { default as database } from './database'
 export { default as find } from './find'
 export { default as findOne } from './findOne'
 export { default as generate } from './generate'

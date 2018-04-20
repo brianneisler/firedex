@@ -1,11 +1,12 @@
-/* eslint-disable */
+import { assoc, isEmpty, mapObjIndexed, reduce, values } from 'ramda'
+import firequery from './firequery'
 import fireref from './fireref'
-import resolvePathParts from './resolvePathParts'
+import getSnapshotChildren from './getSnapshotChildren'
+import getSnapshotPath from './getSnapshotPath'
+import resolvePath from './resolvePath'
 import validateOpConditions from './validateOpConditions'
 import validateOpSchema from './validateOpSchema'
-import query from '../query'
 
-//TODO BRN: This needs to be written
 
 const opRemove = (model = {}) => {
   const {
@@ -20,16 +21,32 @@ const opRemove = (model = {}) => {
   const hydrate = async (database) =>
     opRemove({
       ...model,
-      hydration: await query(database, schema).find(conditions)
+      hydration: await firequery(database, {
+        path: schema.path,
+        conditions
+      }).exec().once('value')
     })
 
   const toUpdates = () => {
-    const { path } = schema
-    const { parts } = path
-    const resolvedPath = resolvePathParts(parts, conditions)
-    return {
-      [resolvedPath]: data,
-      ...generateIndexUpdates(schema, data, resolvedPath)
+    if (!hydration) {
+      throw new Error('Op must first be hydrated before it can provide updates')
+    }
+    if (isEmpty(conditions)) {
+      const resolvedPath = resolvePath(schema, conditions)
+      return {
+        [resolvedPath]: null,
+        // ...generateIndexUpdates(schema, data, resolvedPath)
+      }
+    } else {
+      const children = getSnapshotChildren(hydration)
+      return reduce(
+        (updates, snapshot) => {
+          const snapPath = getSnapshotPath(snapshot)
+          return assoc(snapPath, null, updates)
+        },
+        {},
+        values(children)
+      )
     }
   }
 
@@ -39,9 +56,9 @@ const opRemove = (model = {}) => {
       return op.exec(database)
     }
     const updates = toUpdates()
-    return fireref(database, '/')
+    await fireref(database, '/')
       .update(updates)
-      .then(() => hydration)
+    return hydration
   }
 
   return {

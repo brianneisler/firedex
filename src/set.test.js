@@ -31,7 +31,7 @@ test('sets data when none exists', async () => {
 
   expect(data).toEqual(testValue)
   expect(setResult).toEqual(data)
-})
+}, 10000)
 
 
 test('sets data when data does exist', async () => {
@@ -60,4 +60,4 @@ test('sets data when data does exist', async () => {
 
   expect(data).toEqual(testValue)
   expect(setResult).toEqual(data)
-})
+}, 10000)

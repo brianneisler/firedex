@@ -1,7 +1,7 @@
-import { curry } from 'ramda'
+import { curryN } from 'ramda'
 import opRemoveOne from './util/opRemoveOne'
 
-const removeOne = curry((database, schema, conditions) => {
+const removeOne = curryN(2, (database, schema, conditions = {}) => {
   const op = opRemoveOne({ schema, conditions })
   return op.exec(database)
 })

@@ -26,4 +26,10 @@ const ObjectSchema = defschema('Object', {
   }
 })
 
+ObjectSchema.of = (keySchema, valueSchema) => ({
+  ...ObjectSchema,
+  keySchema,
+  valueSchema
+})
+
 export default ObjectSchema

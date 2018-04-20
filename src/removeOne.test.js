@@ -1,10 +1,10 @@
 import { keys } from 'ramda'
 import { defpath, defschema } from './schema'
 import { cleanupTestApp, initTestApp } from './test'
-import remove from './remove'
+import removeOne from './removeOne'
 
 
-describe('remove', () => {
+describe('removeOne', () => {
   let app
   let database
   beforeEach(async () => {
@@ -16,7 +16,7 @@ describe('remove', () => {
     await cleanupTestApp(app)
   })
 
-  test('can remove using a schema that only has a path with no parameters', async () => {
+  test('can remove one using a schema that only has a path with no parameters', async () => {
     const testData = {
       test: {
         value: 'a'
@@ -30,7 +30,7 @@ describe('remove', () => {
       path: defpath(`${app.namespace}/test`)
     })
 
-    const removeResult = await remove(database, Test)
+    const removeResult = await removeOne(database, Test)
       .then((snapshot) => snapshot.val())
     const data = await database.ref(`${app.namespace}/test`)
       .once('value')
@@ -42,7 +42,7 @@ describe('remove', () => {
     })
   })
 
-  test('can remove mmultiple values using conditions', async () => {
+  test('removes only the first value when multiple match', async () => {
     const testData = {
       test: {
         id1: {
@@ -55,7 +55,7 @@ describe('remove', () => {
         },
         id3: {
           id: 'id3',
-          value: 'b'
+          value: 'a'
         }
       }
     }
@@ -67,27 +67,25 @@ describe('remove', () => {
       path: defpath(`${app.namespace}/test`)
     })
 
-    const removeResult = await remove(database, Test, { value: 'a' })
+    const removeResult = await removeOne(database, Test, { value: 'a' })
       .then((snapshot) => snapshot.val())
     const data = await database.ref(`${app.namespace}/test`)
       .once('value')
       .then((snapshot) => snapshot.val())
 
     expect(data).toEqual({
-      id3: {
-        id: 'id3',
-        value: 'b'
-      }
-    })
-    expect(removeResult).toEqual({
-      id1: {
-        id: 'id1',
-        value: 'a'
-      },
       id2: {
         id: 'id2',
         value: 'a'
+      },
+      id3: {
+        id: 'id3',
+        value: 'a'
       }
+    })
+    expect(removeResult).toEqual({
+      id: 'id1',
+      value: 'a'
     })
   })
 })

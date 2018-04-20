@@ -3,12 +3,14 @@ import create from './create'
 import find from './find'
 import findOne from './findOne'
 import generate from './generate'
-import newId from './newId'
 import query from './query'
-import ref from './ref'
+import ref from './remove'
 import remove from './remove'
+import removeOne from './removeOne'
 import set from './set'
+import setOne from './setOne'
 import update from './update'
+import updateOne from './updateOne'
 
 const database = (_database) => ({
   newId,
@@ -20,7 +22,10 @@ const database = (_database) => ({
     query,
     ref,
     remove,
+    removeOne,
     set,
+    setOne,
+    update,
     update
   })
 })

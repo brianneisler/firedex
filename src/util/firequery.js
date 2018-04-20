@@ -8,7 +8,7 @@ import pickWilds from './pickWilds'
 import resolvePathParts from './resolvePathParts'
 
 const firequery = (database, model) => {
-  const { conditions, path } = model
+  const { conditions, limitToFirst, limitToLast, path } = model
   const exec = () => {
     const parts = parseParts(path)
     const wildConditions = pickWilds(parts, conditions)
@@ -37,9 +37,15 @@ const firequery = (database, model) => {
     if (queryConditionsLength === 1) {
       const child = keys(queryConditions)[0]
       const value = values(queryConditions)[0]
-      return fireref(database, resolvedPath)
+      const ref = fireref(database, resolvedPath)
         .orderByChild(child)
         .equalTo(value)
+      if (limitToFirst) {
+        return ref.limitToFirst(limitToFirst)
+      } else if (limitToLast) {
+        return ref.limitToLast(limitToLast)
+      }
+      return ref
     }
     // else if (queryConditionsLength > 1) {
     //
