@@ -32,7 +32,6 @@ describe('firequery', () => {
       conditions: {},
       path: {
         parts: [
-          app.namespace,
           'items'
         ]
       }
@@ -70,7 +69,6 @@ describe('firequery', () => {
       conditions: {},
       path: {
         parts: [
-          app.namespace,
           'items',
           '$id'
         ]
@@ -111,7 +109,6 @@ describe('firequery', () => {
       },
       path: {
         parts: [
-          app.namespace,
           'items',
           '$id'
         ]
@@ -150,7 +147,6 @@ describe('firequery', () => {
       limitToFirst: 1,
       path: {
         parts: [
-          app.namespace,
           'items',
           '$id'
         ]
@@ -192,7 +188,6 @@ describe('firequery', () => {
       limitToLast: 1,
       path: {
         parts: [
-          app.namespace,
           'items',
           '$id'
         ]

@@ -13,7 +13,7 @@ import opUpdateOne from './util/opUpdateOne'
 const transaction = (database, model = { ops: [] }) => {
   const exec = async () => {
     const hydratedOps = await hydrateOps(model.ops)
-    const updates = generateUpdates(hydratedOps)
+    const updates = generateUpdates(database, hydratedOps)
     try {
       return fireref(database, '/')
         .update(updates)

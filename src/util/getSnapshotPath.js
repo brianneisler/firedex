@@ -1,5 +1,5 @@
 import getRefPath from './getRefPath'
 
-const getSnapshotPath = (snapshot) => getRefPath(snapshot.ref)
+const getSnapshotPath = (database, snapshot) => getRefPath(database, snapshot.ref)
 
 export default getSnapshotPath

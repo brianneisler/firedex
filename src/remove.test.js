@@ -26,7 +26,7 @@ describe('remove', () => {
       .set(testData)
 
     const Test = defschema('Test', {
-      path: defpath(`${app.namespace}/test`)
+      path: defpath('/test')
     })
 
     const removeResult = await remove(database, Test)
@@ -63,7 +63,7 @@ describe('remove', () => {
       .set(testData)
 
     const Test = defschema('Test', {
-      path: defpath(`${app.namespace}/test`)
+      path: defpath('/test')
     })
 
     const removeResult = await remove(database, Test, { value: 'a' })

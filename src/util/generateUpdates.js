@@ -1,9 +1,9 @@
 import { reduce } from 'ramda'
 
-const generateUpdates = (ops) =>
+const generateUpdates = (database, ops) =>
   reduce((updates, op) => ({
     ...updates,
-    ...op.toUpdates()
+    ...op.toUpdates(database)
   }), {}, ops)
 
 export default generateUpdates

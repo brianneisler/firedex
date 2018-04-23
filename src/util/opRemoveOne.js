@@ -37,7 +37,7 @@ const opRemoveOne = (model = {}) => {
     })
   }
 
-  const toUpdates = () => {
+  const toUpdates = (database) => {
     if (!hydration) {
       throw new Error('Op must first be hydrated before it can provide updates')
     }
@@ -49,7 +49,7 @@ const opRemoveOne = (model = {}) => {
       }
     }
     const snapshot = getFirstSnapshotChild(hydration)
-    const snapPath = getSnapshotPath(snapshot)
+    const snapPath = getSnapshotPath(database, snapshot)
     return {
       [snapPath]: null
     }
@@ -60,7 +60,7 @@ const opRemoveOne = (model = {}) => {
       const op = await hydrate(database)
       return op.exec(database)
     }
-    const updates = toUpdates()
+    const updates = toUpdates(database)
     await fireref(database, '/')
       .update(updates)
     if (isEmpty(conditions)) {
