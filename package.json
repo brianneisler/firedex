@@ -1,6 +1,6 @@
 {
   "name": "firedex",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Functionally driven object modeling framework for Firebase",
   "main": "dist/index.js",
   "license": "Apache-2.0",
